@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
+// boostrap first my own css later because index.css helps to override bootstrap
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
