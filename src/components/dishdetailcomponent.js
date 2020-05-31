@@ -22,7 +22,7 @@ class DishDetail extends Component{
 						<p>{commentkey.comment}</p>
 						<div>
 							<p>
-								-- {commentkey.author} , {commentkey.date}
+								-- {commentkey.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(commentkey.date)))}
 							</p>
 						</div>
 					</div>
@@ -61,9 +61,11 @@ class DishDetail extends Component{
 		if(this.props.dish != null) {
 		var dish=this.props.dish;
 			return(
-				<div className="row">
-				    {this.renderDish(dish)}
-					{this.renderComments(dish.comments)}
+				<div className="container">
+					<div className="row">
+				    	{this.renderDish(dish)}
+						{this.renderComments(dish.comments)}
+			    	</div>
 			    </div>
 			);
 		}
