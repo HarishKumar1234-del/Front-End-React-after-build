@@ -11,6 +11,16 @@ class DishDetail extends Component{
 
 		};
 	}
+	
+
+	componentDidMount() {
+		console.log("DishDetail Component componentDidMount is invoked");
+	}
+
+	componentDidUpdate() {
+		console.log("DishDetail Component componentDidUpdate is invoked");
+	}
+
 
 	renderComments(comments)
 	{
@@ -58,6 +68,9 @@ class DishDetail extends Component{
 		);
 	}
 	render(){
+
+		console.log("DishDetail Component render is invoked");
+
 		if(this.props.dish != null) {
 		var dish=this.props.dish;
 			return(
