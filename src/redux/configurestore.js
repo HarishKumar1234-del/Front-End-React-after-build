@@ -15,8 +15,6 @@ export const ConfigureStore = () => {
 			promotions: Promotions,
 			leaders: Leaders
 		})
-		Reducer,
-		initialState
 	);
 
 	return store;
