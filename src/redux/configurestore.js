@@ -7,6 +7,8 @@ import { Promotions } from './promotions';
 import { Leaders } from './leaders';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
+import { createForms } from 'react-redux-form';
+import { InitialFeedback } from './forms';
 
 // so to compose global state we have to map these reducers into one of the four properties there
 // both thunk and logger acts as a enchancer for our store
@@ -16,10 +18,17 @@ export const ConfigureStore = () => {
 			dishes: Dishes,
 			comments: Comments,
 			promotions: Promotions,
-			leaders: Leaders
+			leaders: Leaders,
+			...createForms({
+				feedback: InitialFeedback
+			})
 		}),
 		applyMiddleware(thunk, logger)
 	);
 
 	return store;
 }
+
+// ...createforms will add necessary reducer functions and also the state information into my 
+// create store, we supply the feedback to its intital feedback so that we change the form
+// to its intial state after submit 
