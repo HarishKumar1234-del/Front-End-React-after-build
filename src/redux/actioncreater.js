@@ -1,6 +1,7 @@
 // we have using es6 way of importing here
 import * as ActionTypes from './actiontypes';
 import  { DISHES } from '../shared/dishes';
+import { baseUrl }  from '../shared/baseurl';
 
 // addcomment is the function that create an action object
 // it returns the js object with type as specify and everything other in payload
@@ -25,10 +26,16 @@ export const addComment = (dishId, rating, author, comment) => ({
 export const fetchDishes = () => (dispatch) => {
 	dispatch(dishesLoading(true));
 
-	setTimeout(() => {
-		dispatch(addDishes(DISHES));
-	},2000);
+	return fetch(baseUrl + 'dishes')
+		.then(response => response.json())
+		.then(dishes => dispatch(addDishes(dishes)));
 }
+// now my fetchedishes is setup to go and fetch the dishes and then, once the dishes are
+// obtained then it'll push the dishes into the redux store here by dispatching that to the
+// dishes  
+
+
+
 
 // dishesloading return an action of 
 export const dishesLoading = () => ({
@@ -53,17 +60,50 @@ export const addDishes = (dishes) => ({
 // that is returning a function that is call or dispatch several actions
 
 
+// COMMENTS
+export const fetchComments = () => (dispatch) => {
+
+	return fetch(baseUrl + 'comments')
+		.then(response => response.json())
+		.then(comments => dispatch(addComments(comments)));
+}
+
+
+export const commentsFailed = (errmess) => ({
+	type: ActionTypes.COMMENTS_FAILED,
+	payload: errmess
+})
+
+export const addComments = (comments) => ({
+	type: ActionTypes.ADD_COMMENTS,
+	payload: comments
+});
 
 
 
+// PROMOS
 
+export const fetchPromos = () => (dispatch) => {
+	dispatch(promosLoading(true));
 
+	return fetch(baseUrl + 'promotions')
+		.then(response => response.json())
+		.then(promos => dispatch(addPromos(promos)));
+}
 
+export const promosLoading = () => ({
+	type: ActionTypes.PROMOS_LOADING
+});
 
+export const promosFailed = (errmess) => ({
+	type: ActionTypes.PROMOS_FAILED,
+	payload: errmess
+})
 
-
-
-
+export const addPromos = (promos) => ({
+	type: ActionTypes.ADD_PROMOS,
+	payload: promos
+});
 
 
 

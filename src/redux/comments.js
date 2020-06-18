@@ -1,4 +1,3 @@
-import  { COMMENTS } from '../shared/comments';
 import * as ActionTypes from './actiontypes';
 
 // this will our reducer function, it will receive current state and action,
@@ -16,17 +15,27 @@ import * as ActionTypes from './actiontypes';
 // as dishes and retur them
 
 // payload is js object which contais various parts of comment
-export const Comments = (state = COMMENTS, action) => {
+export const Comments = (state = {
+		errMess: null,
+		comments: []
+}, action) => {
 	switch(action.type) {
+		case ActionTypes.ADD_COMMENTS:
+			return {...state, isLoading: false, errMess: null, comments: action.payload };
+
+		case ActionTypes.COMMENTS_FAILED:
+			return {...state, isLoading: false, errMess: action.payload, comments: []};
+
 		case ActionTypes.ADD_COMMENT:
 			var comment = action.payload;
 			// state is an array of comments and its length is served as id
-			comment.id = state.length;
+			comment.id = state.comments.length;	
 			comment.date = new Date().toISOString();
 			// we do not directly return the state we push comment into state
 			// then new object state is create and return
 			console.log(" Comment: ", comment)
-			return state.concat(comment);
+			return {...state, comments: state.comments.concat(comment)};
+
 		default:
 			return state;
 	}
