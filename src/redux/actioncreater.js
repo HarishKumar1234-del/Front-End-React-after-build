@@ -27,9 +27,31 @@ export const fetchDishes = () => (dispatch) => {
 	dispatch(dishesLoading(true));
 
 	return fetch(baseUrl + 'dishes')
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			else{
+				var error = new Error('Error ' + response.status + ': ' + response.statusText);
+				error.response = response;
+				throw error;
+			}
+		},
+		error => {
+			var errmess = new Error(error.message);
+			throw errmess;
+		})
 		.then(response => response.json())
-		.then(dishes => dispatch(addDishes(dishes)));
+		.then(dishes => dispatch(addDishes(dishes)))
+		.catch(error => dispatch(dishesFailed(error.message)));
 }
+// status will contain the code
+// statusText will contain the error message from the server
+// error is construct as error object here
+// first part is where you receive something from the server which is error 
+// second part is where you do not receive anything and thus create your own error object
+
+
 // now my fetchedishes is setup to go and fetch the dishes and then, once the dishes are
 // obtained then it'll push the dishes into the redux store here by dispatching that to the
 // dishes  
@@ -64,8 +86,23 @@ export const addDishes = (dishes) => ({
 export const fetchComments = () => (dispatch) => {
 
 	return fetch(baseUrl + 'comments')
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			else{
+				var error = new Error('Error ' + response.status + ': ' + response.statusText);
+				error.response = response;
+				throw error;
+			}
+		},
+		error => {
+			var errmess = new Error(error.message);
+			throw errmess;
+		})
 		.then(response => response.json())
-		.then(comments => dispatch(addComments(comments)));
+		.then(comments => dispatch(addComments(comments)))
+		.catch(error => dispatch(commentsFailed(error.message)));
 }
 
 
@@ -87,8 +124,23 @@ export const fetchPromos = () => (dispatch) => {
 	dispatch(promosLoading(true));
 
 	return fetch(baseUrl + 'promotions')
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			else{
+				var error = new Error('Error ' + response.status + ': ' + response.statusText);
+				error.response = response;
+				throw error;
+			}
+		},
+		error => {
+			var errmess = new Error(error.message);
+			throw errmess;
+		})
 		.then(response => response.json())
-		.then(promos => dispatch(addPromos(promos)));
+		.then(promos => dispatch(addPromos(promos)))
+		.catch(error => dispatch(promosFailed(error.message)));
 }
 
 export const promosLoading = () => ({
