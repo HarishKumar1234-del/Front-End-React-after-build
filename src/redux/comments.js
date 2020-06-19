@@ -29,11 +29,8 @@ export const Comments = (state = {
 		case ActionTypes.ADD_COMMENT:
 			var comment = action.payload;
 			// state is an array of comments and its length is served as id
-			comment.id = state.comments.length;	
-			comment.date = new Date().toISOString();
 			// we do not directly return the state we push comment into state
 			// then new object state is create and return
-			console.log(" Comment: ", comment)
 			return {...state, comments: state.comments.concat(comment)};
 
 		default:

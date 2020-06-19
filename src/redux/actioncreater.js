@@ -7,15 +7,54 @@ import { baseUrl }  from '../shared/baseurl';
 // it returns the js object with type as specify and everything other in payload
 // it returns it to the reducer func
 // parameters receive is mapped into four properties
-export const addComment = (dishId, rating, author, comment) => ({
+export const addComment = (comment) => ({
 	type: ActionTypes.ADD_COMMENT,
-	payload: {
+	payload: comment
+});
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+
+	const newComment = {
 		dishId: dishId,
 		rating: rating,
 		author: author,
 		comment: comment
 	}
-});
+	newComment.date = new Date().toISOString();
+
+	return fetch(baseUrl + 'comments',{
+		method: 'POST',
+		body: JSON.stringify(newComment),
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		credentials: 'same-origin' 
+	})
+	.then(response => {
+		if (response.ok) {
+			return response;
+		}
+		else{
+			var error = new Error('Error ' + response.status + ': ' + response.statusText);
+			error.response = response;
+			throw error;
+		}
+	},
+	error => {
+		var errmess = new Error(error.message);
+		throw errmess;
+	})
+	.then(response => response.json())
+	.then(response => dispatch(addComment(response)))
+	.catch(error => { console.log('Post comments ', error.message);
+			alert('Your comment could not be posted\nError: ' + error.message);	});
+
+}
+// in this by default operation is GET operation
+// we will enclose the body of the message to the body we send out
+
+
+
 
 
 // (dispatch) is the function returned by fetchDishes and its defining is define below
