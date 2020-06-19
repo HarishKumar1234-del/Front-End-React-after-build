@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors} from 'react-redux-form';
 import { Loading } from './loadingcomponent';
 import { baseUrl } from '../shared/baseurl';
-
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 
 const required = (val) => val && val.length;
@@ -103,21 +103,25 @@ class CommentForm extends Component{
 		{
 			const allcomments=comments.map((commentkey) =>{
 				return(
-					<div key={commentkey.id} className="mt-4">
-						<p>{commentkey.comment}</p>
-						<div>
-							<p>
-								-- {commentkey.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(commentkey.date)))}
-							</p>
+					<Fade in>
+						<div key={commentkey.id} className="mt-4">
+							<p>{commentkey.comment}</p>
+							<div>
+								<p>
+									-- {commentkey.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(commentkey.date)))}
+								</p>
+							</div>
 						</div>
-					</div>
+					</Fade>
 				);
 			});
 			return(
 				<div className="col-12 col-md-5 m-1">
 					<h4> Comments </h4>
-						{allcomments}
-                        <CommentForm dishId={dishId} postComment={postComment} />
+						<Stagger in>
+							{allcomments}
+						</Stagger>
+    	                    <CommentForm dishId={dishId} postComment={postComment} />
 				</div>
 			);
 		}
@@ -129,17 +133,25 @@ class CommentForm extends Component{
 			)
 		}
 	}
+
+	// stagger means information is popped one after another in the stage
+
 	function RenderDish({dish})
 	{
 		return(
 				<div className="col-12 col-md-5 m-1">
-					<Card>
-						<CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
-						<CardBody>
-							<CardTitle>{dish.name}</CardTitle>
-							<CardText>{dish.description}</CardText>
-						</CardBody>
-			    	</Card>
+				<FadeTransform in
+					transformProps={{
+						exitTransform: 'scale(0.5) translateY(-50%)'
+					}}>
+						<Card>
+							<CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+							<CardBody>
+								<CardTitle>{dish.name}</CardTitle>
+								<CardText>{dish.description}</CardText>
+							</CardBody>
+			    		</Card>
+			    	</FadeTransform>
 				</div>
 		);
 	}
