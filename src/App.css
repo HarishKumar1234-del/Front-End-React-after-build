@@ -72,3 +72,54 @@ address{
 .navbar-dark {
     background-color: #512DA8;
 }
+
+.page-enter {
+  /*opacity is the transparency level where 1 is not transparent at all and 0 is transparent*/
+    opacity: 0.01;
+    /* translateX shifts to 0,0 to x,0 */
+    transform: translateX(-100%);
+}
+
+.page-enter-active{
+  opacity: 1;
+  transform: translateX(0%);
+  /* ease-in means it starts quickly and slowly ease into its place */
+  transition: all 300ms ease-in;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+.page-exit-active {
+  /*0.01 means completely invisible*/
+  opacity: 0.01;
+  transform: translateX(100%);
+  transition: all 300ms ease-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
