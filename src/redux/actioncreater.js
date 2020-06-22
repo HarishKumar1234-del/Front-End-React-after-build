@@ -1,6 +1,5 @@
 // we have using es6 way of importing here
 import * as ActionTypes from './actiontypes';
-import  { DISHES } from '../shared/dishes';
 import { baseUrl }  from '../shared/baseurl';
 
 // addcomment is the function that create an action object
