@@ -1,4 +1,4 @@
-import  { LEADERS } from '../shared/leader';
+import * as ActionTypes from './actiontypes';
 
 // this will our reducer function, it will receive current state and action,
 // which is pure function
@@ -13,9 +13,33 @@ import  { LEADERS } from '../shared/leader';
 // as two parameters
 // if state is not defined you give the initial value of state 
 // as dishes and retur them
-export const Leaders = (state = LEADERS, action) => {
+// export const Leaders = (state = LEADERS, action) => {
+// 	switch(action.type) {
+// 		default:
+// 			return state;
+// 	}
+// }
+
+
+export const Leaders = (state = {
+		isLoading: true,
+		errMess: null,
+		leaders: []
+}, action) => {
 	switch(action.type) {
+
+		case ActionTypes.ADD_LEADERS:
+			return {...state, isLoading: false, errMess: null, leaders: action.payload };
+
+		case ActionTypes.LEADERS_LOADING:
+			return {...state, isLoading: true, errMess: null, leaders: []};
+
+		case ActionTypes.LEADERS_FAILED:
+			return {...state, isLoading: false, errMess: action.payload, leaders: []};
+
 		default:
 			return state;
 	}
 }
+
+

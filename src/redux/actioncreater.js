@@ -12,6 +12,35 @@ export const addComment = (comment) => ({
 	payload: comment
 });
 
+
+export const postFeedback = (newfeedback) => (dispatch) =>{
+	// console.log(newfeedback)
+	// if we do direct newtemp=newfeedback then it do not add new attribute
+	// it show object is not extensible error for the date if we do direct
+	// so we have done the long method
+	const newtemp = {
+	firstname: newfeedback.firstname,
+    lastname: newfeedback.lastname,
+    telnum: newfeedback.telnum,
+    email: newfeedback.email,
+    agree: newfeedback.agree,
+    contactType: newfeedback.contactType,
+    message: newfeedback.message
+	}
+	newtemp.date = new Date().toISOString();
+	// console.log(newtemp)
+
+	return fetch(baseUrl + 'feedback',{
+		method: 'POST',
+		body: JSON.stringify(newtemp),
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		credentials: 'same-origin' 
+	})
+} 
+
+
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 
 	const newComment = {
@@ -194,6 +223,46 @@ export const promosFailed = (errmess) => ({
 export const addPromos = (promos) => ({
 	type: ActionTypes.ADD_PROMOS,
 	payload: promos
+});
+
+
+// LEADERS
+
+export const fetchLeaders = () => (dispatch) => {
+	dispatch(leadersLoading(true));
+
+	return fetch(baseUrl + 'leaders')
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			else{
+				var error = new Error('Error ' + response.status + ': ' + response.statusText);
+				error.response = response;
+				throw error;
+			}
+		},
+		error => {
+			var errmess = new Error(error.message);
+			throw errmess;
+		})
+		.then(response => response.json())
+		.then(leaders => dispatch(addLeaders(leaders)))
+		.catch(error => dispatch(leadersFailed(error.message)));
+}
+
+export const leadersLoading = () => ({
+	type: ActionTypes.LEADERS_LOADING
+});
+
+export const leadersFailed = (errmess) => ({
+	type: ActionTypes.LEADERS_FAILED,
+	payload: errmess
+})
+
+export const addLeaders = (leaders) => ({
+	type: ActionTypes.ADD_LEADERS,
+	payload: leaders
 });
 
 

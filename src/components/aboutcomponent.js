@@ -1,33 +1,69 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
+import { Loading } from './loadingcomponent';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseurl';
+import { Fade, Stagger } from 'react-animation-components';
 
-function RenderLeader({leader}){
+
+function Displayleader({leader})
+{
     return(
-        <Media>
-            <Media left >
-                <Media width="100%" object src={leader.image} alt={leader.name} />
-            </Media>
-            <Media body className="ml-2">
-                <Media heading> 
-                    {leader.name}       
+            <Media>
+                <Media left>
+                    <Media width="100%" object src={baseUrl + leader.image} alt={leader.name} />
                 </Media>
-                <p>
-                    {leader.description}
-                </p>
+                <Media body className="ml-2">
+                    <Media heading> 
+                        {leader.name}       
+                    </Media>
+                    <p>
+                        {leader.description}
+                    </p>
+                </Media>
             </Media>
-        </Media>
-    );
+        );
 }
 
-function About(props) {
-
-    const leaders = props.leaders.map((leader) => {
-        return (
-                <RenderLeader leader={leader} />
+function RenderLeader({leaders})
+{
+    // console.log(leaders)
+    if(leaders.isLoading) 
+    {
+        return(
+            <Loading />
         );
-    });
+    }
+    else if(leaders.errMess != null)
+    {
+        return(
+            <h4>{leaders.errMess}</h4>
+        );
+    }
+    else
+    {
+        const lead = leaders.leaders.map((leader) => {
+            return (
+                    <Fade in>
+                        <Displayleader leader={leader} />
+                    </Fade>
+            );
+        });
 
+        return(
+            <div>
+                <Stagger in>
+                    {lead}
+                </Stagger>
+            </div>
+        );
+    }
+}
+
+
+// always obtin props in () or in const About = props but not in {props}
+function About(props) {
+    // console.log(props.leaders)
     return(
         <div className="container">
             <div className="row">
@@ -84,7 +120,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        {leaders}
+                        <RenderLeader leaders={props.leaders} />
                     </Media>
                 </div>
             </div>
